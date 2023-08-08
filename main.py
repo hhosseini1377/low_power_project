@@ -41,20 +41,21 @@ def Static_Slower(task_set, alpha, Alpha):
 
 def MO_faster(task_set, alpha, Alpha):
     f_ee = (Alpha/alpha)**(1/3)
-    print(f_ee)
     backup_entities = backup_schedule(task_set, False).schedule_entities
     energy = 0
     start_time_p = 0
     for task in task_set:
         backup_entity = next(filter(lambda entity: entity.task == task, backup_entities), None)
         f_u = task.hp_C/(backup_entity.start_time-start_time_p)
+        f_u = min(1, f_u)
+        f_u = max(f_u, f_ee)
+        print(backup_entity.start_time, backup_entity.end_time, start_time_p, f_u)
         start_time_p += task.hp_C/f_u
-        print(f_u)
     return energy   
 
 def main():
     utilization_lp = random.uniform(0.3, 1)
-    utilization_lp = 0.5
+    utilization_lp = 0.9
     n = 10
     task_set = []
     alpha, Alpha = 1, 0.1
@@ -64,9 +65,7 @@ def main():
         new_task = task(util)
         task_set.append(new_task)
 
-
     f_max_lp = random.uniform(0.7, 0.9)
-
     print(MO_faster(task_set, alpha, Alpha))
 
 if __name__ == "__main__":
