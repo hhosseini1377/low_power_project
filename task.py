@@ -8,6 +8,7 @@ class task():
         self.lp_C = 100*self.lp_utilization
         self.hp_C = 100*self.hp_utilization
         self.p_scale = 0.8
+        self.f_max = 0.8
 
 class backup_schedule():
     def __init__(self, task_set, primary) -> None:
